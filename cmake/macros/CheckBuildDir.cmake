@@ -8,16 +8,16 @@
 # WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# This file is run right before CMake starts configuring the sourcetree
+#
+# Force out-of-source build
+#
 
-# Example: Force CMAKE_INSTALL_PREFIX to be preloaded with something before
-# doing the actual first "configure"-part - allows for hardforcing
-# destinations elsewhere in the CMake buildsystem (commented out on purpose)
+string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}" BUILDING_IN_SOURCE)
 
-# Override CMAKE_INSTALL_PREFIX on Windows platforms
-#if(WIN32)
-#  if(NOT CYGWIN)
-#    set(CMAKE_INSTALL_PREFIX
-#      "" CACHE PATH "Default install path")
-#  endif()
-#endif()
+if(BUILDING_IN_SOURCE)
+  message(FATAL_ERROR "
+    This project requires an out of source build. Remove the file 'CMakeCache.txt'
+    found in this directory before continuing, create a separate build directory
+    and run 'cmake path_to_project [options]' from there.
+  ")
+endif()
